@@ -8,7 +8,9 @@
 <h2> Ferramentas </h2>
 <p display="inline-block">
   <img width="48" src="https://logospng.org/download/javascript/logo-javascript-icon-1024.png" alt="js-logo"/>
-  <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="figma" width="40" height="40"/>
+  <img width="48" src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="figma"/>
+  <img width="48" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/512px-HTML5_logo_and_wordmark.svg.png" alt="html"/>
+  <img width="48" src="https://cdn.freebiesupply.com/logos/large/2x/bootstrap-4-logo-png-transparent.png" alt="bootstrap"/>
 </p>
 
 <h2> Ambientes de Desenvolvimento </h2>
