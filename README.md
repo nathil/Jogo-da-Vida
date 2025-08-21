@@ -1,5 +1,5 @@
 <h1 align="center" > Jogo da Vida de John Conway </h1>
-<p align="center" ><i> A implementação do Jogo da Vida é um projeto da matéria de autômatos, em que devemos utilizar linguagem livre de contexto para criá-lo.</i></p>
+<p align="center" ><i> A implementação do Jogo da Vida é um projeto da matéria de autômatos, em que a partir do seu desenvolvimento em linguagem regular teremos uma otimização usando linguagem livre de contexto para criá-lo.</i></p>
 
 <h2> Sobre o Projeto </h2>
 
