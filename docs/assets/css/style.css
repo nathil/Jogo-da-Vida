@@ -1,13 +1,13 @@
+:root {
+  --bs-primary-rgb: 0, 35, 51;
+}
+
 html, body {
   margin: 0;
   padding: 0;
 }
 canvas {
   display: block;
-}
-
-:root {
-  --bs-primary-rgb: 0, 35, 51;
 }
 
 .text-justify{
