@@ -1,9 +1,16 @@
 <h1 align="center" > Jogo da Vida de John Conway </h1>
-<p align="center" ><i> A implementação do Jogo da Vida é um projeto da matéria de autômatos, em que a partir do seu desenvolvimento em linguagem regular teremos uma otimização usando linguagem livre de contexto para criá-lo.</i></p>
+<p align="center" ><i> A implementação do Jogo da Vida é um projeto da disciplina de autômatos, em que a partir do seu desenvolvimento em linguagem regular teremos uma otimização usando linguagem livre de contexto para criá-lo.</i></p>
 
 <h2> Sobre o Projeto </h2>
+Nesse projeto o objetivo central é a construção de um site, que apresenta a história do jogo e seu criador, também há a possibilidade de jogar o jogo da vida original e sua versão otimazada implementando uma linguagem livre de contexto e o algoritmo Hashlife. 
 
 <h2> Funcionalidades </h2>
+<ol>
+    <li> Sobre o Jogo </li>
+    <li> Implementação do Jogo da Vida </li>
+    <li> Implementação do Algoritmo Hashlife para otimização do Jogo da Vida</li>
+    <li> Informações Adicionais </li> 
+</ol>
 
 <h2> Ferramentas </h2>
 <p display="inline-block">
@@ -16,4 +23,12 @@
 <h2> Ambientes de Desenvolvimento </h2>
 <img width="35" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/2048px-Visual_Studio_Code_1.35_icon.svg.png" alt="vscode-logo"/>
 
-<h2> Referências </h2>
+## Autores 
+- [@ofranbraga](https://github.com/ofranbraga)
+- [@murilo-henrique060](https://github.com/murilo-henrique060)
+- [@nathil](https://github.com/nathil)
+- [@TaygoCezar](https://github.com/TaygoCezar)
+
+## Referências 
+- [Algoritmo Hashlife](https://www.dev-mind.blog/hashlife) 
+- [Jogue o Jogo da Vida](https://playgameoflife-com.translate.goog/?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=pt&_x_tr_pto=tc)
