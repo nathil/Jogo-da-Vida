@@ -98,7 +98,8 @@ class TableUI {
 let table;
 function setup() {
   table = new TableUI(500);
-  const canvas = createCanvas(table.size, table.size);
+  const canvasEl = document.getElementById("tabuleiro");
+  const canvas = createCanvas(table.size, table.size, canvasEl);
   canvas.elt.addEventListener('wheel', (e) => e.preventDefault());
 
   table.table[31][32] = 1;
