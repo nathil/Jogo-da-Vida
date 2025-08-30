@@ -82,7 +82,7 @@ class UI {
         // console.log(`Desenhando de (${xInicio}, ${yInicio}) a (${xFim}, ${yFim})`);
 
         fill("white");
-        blendMode(this.escala < 12 ? BLEND : ADD); // Remove as bordas para escalas menores
+        blendMode(this.escala > 12 ? BLEND : ADD); // Remove as bordas para escalas menores
 
         for (let i = xInicio; i <= xFim; i++) {
             for (let j = yInicio; j <= yFim; j++) {
