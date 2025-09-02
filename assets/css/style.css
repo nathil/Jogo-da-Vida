@@ -1,5 +1,9 @@
-:root {
+:root, [data-bs-theme=light] {
   --bs-primary-rgb: 0, 35, 51;
+}
+
+body[data-bs-theme=dark] {
+  --bs-primary-rgb: 13, 15, 15;
 }
 
 html, body {
@@ -13,3 +17,5 @@ canvas {
 .text-justify{
   text-align: justify;
 }
+
+

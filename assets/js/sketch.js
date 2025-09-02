@@ -1,4 +1,6 @@
 let interface = null;
+let modoPincel = "escrever";
+
 function setup() {
   const canvasEl = document.getElementById("tabuleiro");
   interface = new UI(500, canvasEl);
@@ -6,7 +8,9 @@ function setup() {
 }
 
 function mouseWheel(e) {
-  interface.definirZoom(interface.zoomAtual + (e.delta < 0 ? 0.1 : -0.1));
+  if (interface.estaNaTela(createVector(mouseX, mouseY))) {
+    interface.definirZoom(interface.zoomAtual + (e.delta < 0 ? 0.1 : -0.1));
+  }
 }
 
 function draw() {
@@ -18,9 +22,9 @@ function draw() {
   if (mouseIsPressed && interface.estaNaTela(posicao)) {
     const posicaoTabela = interface.telaParaTabela(posicao);
 
-    if (mouseButton == "left" || mouseButton == "right") {
-      interface.jogo.tabela.inserirCelula(posicaoTabela.x, posicaoTabela.y, mouseButton == "left" ? 1 : 0);
-    } else if (mouseButton == "center") {
+    if (mouseButton == "left") {
+      interface.jogo.tabela.inserirCelula(posicaoTabela.x, posicaoTabela.y, modoPincel == "escrever" ? 1 : 0);
+    } else if (mouseButton == "right") {
       interface.moverTabela(createVector(movedX, movedY));
     }
   }

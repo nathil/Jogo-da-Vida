@@ -3,6 +3,8 @@ class UI {
         createCanvas(tamanho, tamanho, canvas);
         canvas.addEventListener("wheel", (e) => e.preventDefault());
         canvas.addEventListener("contextmenu", (e) => e.preventDefault());
+        
+        this.canvas = canvas;
 
         this.deslocamento = createVector(0, 0);
 
@@ -52,22 +54,26 @@ class UI {
     moverTabela(distancia) {
         this.deslocamento.add(distancia);
     }
-
+    
     definirZoom(novoZoom, compensar=true) {
         const posicaoMouse = createVector(mouseX, mouseY);
         const referencia = this.estaNaTela(posicaoMouse) ? posicaoMouse : this.meio.copy();
         const referenciaNaTabela = this.telaParaTabela(referencia.copy(), false);
-
+        
         this.zoomAtual = constrain(novoZoom, this.zoomMin, this.zoomMax);
         this.escala = pow(2, this.zoomAtual);
-
+        
         if (compensar) {
             const referenciaNaTela = this.tabelaParaTela(referenciaNaTabela);
             this.moverTabela(referencia.sub(referenciaNaTela));
         }
     }
     
-
+    redefinirTabela() {
+        this.deslocamento.set(0, 0);
+        this.definirZoom(3.33, false);
+    }
+    
     desenhar() {
         background(0);
 
@@ -92,6 +98,17 @@ class UI {
                 }
             }
         }
+    }
+
+    salvarTela() {
+        const imageDataURL = this.canvas.toDataURL('image/png');
+
+        const a = document.createElement('a');
+        a.href = imageDataURL;
+        a.download = 'my_canvas_image.png'; // Specify the desired filename
+        document.body.appendChild(a); // Temporarily add the link to the DOM
+        a.click(); // Programmatically click the link to trigger download
+        document.body.removeChild(a); // Remove the link after clicking
     }
 
     iniciarJogo(intervalo=200) {

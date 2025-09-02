@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Game of life, the Conway's cellular automaton">
@@ -12,19 +11,19 @@
     
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.8/lib/p5.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.8/lib/addons/p5.sound.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-    <meta charset="utf-8"/>
 
   </head>
   
-  <body>
+  <body data-bs-theme="light">
     <nav class="navbar navbar-expand-lg bg-primary p-4" data-bs-theme="dark">
-      <div class="container-fluid">
+      <div class="container-lg">
         <a class="navbar-brand" href="#">
-         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2bv1cue72h0wV9s-_gbPhnjenlbc5R3YwQgH4bkuMwNEAZNCZc4CELfpviys8p19bbAU&usqp=CAU" alt="Logo" width="25" height="25" class="d-inline-block align-text-center">
+         <img src="/assets/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
         </a>
         <div class="collapse navbar-collapse" id="navbarText">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="index.html">Home</a>
             </li>
@@ -38,6 +37,8 @@
               <a class="nav-link" href="sobre.html">Sobre</a>
             </li>
           </ul>
+
+          <i id="theme-button" class="bi bi-circle-half text-light fs-4"></i>
         </div>
       </div>
     </nav>
@@ -60,9 +61,12 @@
         </div>
     </main>
      
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="sketch.js"></script>
     <script src="automato.js"></script>
     <script src="jogo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"> </script>
+    <script src="assets/js/script.js"> </script>
+
   </body>
 </html>
