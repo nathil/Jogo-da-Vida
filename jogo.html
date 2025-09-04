@@ -45,12 +45,20 @@
       <div class="row mt-5 gx-5">
         <div class="col-12 col-lg-auto order-lg-1">
           <div class="hstack justify-content-center">
-            <canvas id="tabuleiro"></canvas>
+            <div class="position-relative">
+              <canvas id="tabuleiro"></canvas>
+              <pre id="debug-log" class="position-absolute top-0 start-0 p-1 user-select-none" style="background-color: rgba(0, 0, 0, 0.5); display: none;"></pre>
+            </div>
           </div>
 
-          <div>
-            <i id="save-button" class="bi bi-download fs-4"></i>
+          <div class="hstack gap-1">
+            <i id="play-pause-fast-button" class="bi bi-pause fs-4"></i>
+            <i id="write-erase-button" class="bi bi-pencil fs-5"></i>       
             <i id="redefine-button" class="bi bi-arrow-clockwise fs-4"></i>
+            <i id="save-button" class="bi bi-download fs-4"></i>
+            <i id="debug-button" class="bi bi-bug fs-5 me-auto"></i>
+            <i id="zoom-in-button" class="bi bi-zoom-in fs-4"></i>
+            <i id="zoom-out-button" class="bi bi-zoom-out fs-4"></i>
           </div>
 
         </div>

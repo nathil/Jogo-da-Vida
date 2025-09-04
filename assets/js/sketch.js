@@ -1,5 +1,18 @@
 let interface = null;
 let modoPincel = "escrever";
+let estado = "pausado";
+let debugIn = null;
+const debugEl = $("#debug-log");
+
+function debugLog() {
+  let log = "";
+
+  log += `fps: ${frameRate().toFixed(1)}\n`;
+  log += `tamanho: ${interface?.jogo.tabela.tamanho}x${interface?.jogo.tabela.tamanho}\n`;
+  log += `quantidade: ${Math.pow(interface?.jogo.tabela.tamanho, 2)}`
+  
+  debugEl.html(log);
+}
 
 function setup() {
   const canvasEl = document.getElementById("tabuleiro");
@@ -31,3 +44,64 @@ function draw() {
   
   frameRate(60);
 }
+
+$("#play-pause-fast-button").click(() => {
+  const botaoEl = $("#play-pause-fast-button");
+  if (estado === "pausado") {
+    estado = "executando";
+    interface.iniciarJogo(150);
+    botaoEl.removeClass("bi-pause bi-fast-forward");
+    botaoEl.addClass("bi-play");
+  } else if (estado === "executando") {
+    estado = "acelerado";
+    interface.pararJogo();
+    interface.iniciarJogo(10);
+    botaoEl.removeClass("bi-play bi-pause");
+    botaoEl.addClass("bi-fast-forward");
+  } else {
+    estado = "pausado";
+    interface.pararJogo();
+    botaoEl.removeClass("bi-play bi-fast-forward");
+    botaoEl.addClass("bi-pause");
+  }
+});
+
+$("#write-erase-button").click(() => {
+  const botaoEl = $("#write-erase-button");
+  if (modoPincel === "escrever") {
+    modoPincel = "apagar";
+    botaoEl.removeClass("bi-pencil");
+    botaoEl.addClass("bi-eraser");
+  } else {
+    modoPincel = "escrever";
+    botaoEl.removeClass("bi-eraser");
+    botaoEl.addClass("bi-pencil");
+  }
+});
+
+$("#redefine-button").click(() => {
+  interface.redefinirTabela();
+});
+
+$("#save-button").click(() => {
+  interface.salvarTela();
+});
+
+$("#debug-button").click(() => {
+  if (debugIn === null) {
+    debugIn = setInterval(debugLog, 100);
+    debugEl.show();
+  } else {
+    clearInterval(debugIn);
+    debugIn = null;
+    debugEl.hide();
+  }
+});
+
+$("#zoom-in-button").click(() => {
+  interface.definirZoom(interface.zoomAtual + 0.1);
+});
+
+$("#zoom-out-button").click(() => {
+  interface.definirZoom(interface.zoomAtual - 0.1);
+});
