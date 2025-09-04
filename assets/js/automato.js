@@ -1,4 +1,4 @@
-class Automato {
+export default class Automato {
     constructor(transicoes, estadoInicial, estadosFinais) {
         this.transicoes = transicoes
         this.estadoInicial = estadoInicial
