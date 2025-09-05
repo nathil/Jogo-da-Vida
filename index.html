@@ -54,13 +54,25 @@
 
       <h4>Regras do Jogo da Vida</h4>
       <p class="mt-3 mb-4 text-justify">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet illum minima magnam minus laborum provident sint, voluptate expedita, aperiam, ullam nam ratione dolore tempore quasi modi ipsum. Deleniti repudiandae praesentium nobis autem illum. Nesciunt dolorum esse incidunt, ea nisi enim corrupti, officiis ut dolore quisquam accusantium porro iusto voluptatem ipsam saepe amet est in. Libero suscipit praesentium porro veritatis recusandae nostrum id corrupti ex odio distinctio quisquam dolorum voluptatem fugiat quis, dicta quas non. Porro illum repellendus officia aliquam commodi, eligendi quaerat recusandae nesciunt dolore labore quo a soluta. Accusamus similique iusto, officia voluptatibus iure minima voluptatem quasi atque? Doloribus aliquam ad similique laboriosam nulla. Modi molestiae atque iusto suscipit voluptate animi, error repudiandae beatae quidem nam. Saepe, provident dolores fuga repudiandae alias id cupiditate dolore corporis iusto repellat pariatur officiis tenetur recusandae possimus. Ducimus assumenda rerum fugiat omnis laudantium possimus ipsa commodi autem nam. Omnis voluptates a, ipsum sapiente, distinctio maiores corporis saepe similique sunt fuga suscipit perspiciatis sed, odio ducimus id cumque laboriosam impedit. Soluta ut deserunt perferendis, minima magni quia velit vel commodi mollitia illum pariatur odit fuga. Eius labore nisi voluptate tenetur perspiciatis delectus, eaque dolorem dolor nemo. Assumenda impedit asperiores error similique? Totam, voluptatum maiores!
+        O Jogo da Vida desenrola-se em uma grade bidimensional infinita, onde cada célula pode estar em um de dois estados: "viva" ou "morta". A evolução do sistema ocorre em passos discretos de tempo, chamados de gerações. O estado de uma célula na próxima geração é determinado pelo estado de suas oito células vizinhas na geração atual, de acordo com as seguintes regras:
+
+        Nascimento: Uma célula morta com exatamente três vizinhas torna-se uma célula viva.
+        Sobrevivência: Uma célula viva com duas ou três vizinhas vivas continua viva.
+        Morte: Uma célula viva com menos de duas vizinhas vivas morre por “solidão”. Uma célula viva com mais de três vizinhas morre por “superpopulação”.
+
+        Estas regras são aplicadas simultaneamente a todas as células da grade para gerar a próxima geração. A beleza do sistema reside na sua capacidade de, a partir destas regras simples, gerar uma variedade impressionante de padrões, desde estruturas estáveis e oscilantes até padrões que se movem pela grade, como o famoso "planador" (glider).
       </p>
-    
-      <h4>Natureza dos Estados</h4>
+
+      <h4>Naturezas-Mortas</h4>
       <p class="mt-3 mb-4 text-justify">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus quidem tempora eveniet est ullam fugit voluptates adipisci dolorum quae vel, sequi quam ipsam ex deserunt, architecto incidunt ad numquam vero placeat aspernatur provident. Quis alias assumenda unde. Maiores, odit? Nostrum praesentium cum, sit maxime labore sint vero. Aspernatur dolores nisi velit, quisquam, libero autem inventore magnam voluptatibus quasi ea ullam nam tempore minus laudantium dolore quidem! Laudantium fugit consequuntur error sint aperiam reprehenderit! Praesentium suscipit neque necessitatibus harum itaque cupiditate voluptatum! Quo in optio, ab aperiam perferendis, eligendi accusamus dolore deserunt fuga, voluptate quam quisquam. Nihil laudantium temporibus commodi perferendis quidem, nostrum, ducimus rem hic nisi praesentium velit facere illo distinctio! Atque, debitis excepturi. Recusandae, quam, distinctio dolore ut placeat veniam eum quod enim sed dicta libero ipsum unde omnis sint nesciunt aliquid nam id maxime. Exercitationem corporis tempore molestias quos modi minima, repellendus, nulla facere velit labore, sed perferendis fugit maxime nihil. Expedita nulla culpa consectetur magni, iste amet nostrum temporibus, asperiores unde laborum beatae reprehenderit numquam eligendi aspernatur quae molestiae quod. At blanditiis aliquam tempore similique odio quidem aliquid vitae sapiente dicta quas accusantium atque eveniet, autem iste, nam pariatur dolorem delectus harum! Odit debitis quis dicta odio!
+        Do inglês Still Life, a natureza-morta diz respeito a padrões que ocasionalmente irão aparecer ao prosseguir do jogo, são padrões estáticos que não se alteram ao passar das gerações. Então uma vez formadas e sem a interação com outras estruturas, esses padrões se mantem inalteráveis. Curiosamente, o nome Natureza-Morta deriva da arte, onde retrata cenas inanimadas.
       </p>
+      <h4>Osciladores</h4>
+      <p class="mt-3 mb-4 text-justify">
+        Do inglês Oscillators, osciladores são padrões cíclicos de células que se alteram entre 2 ou mais formatos de forma contínua. Isto é, eles tem um padrão dinâmico, transitando para vários estados, mas que após algumas gerações retorna para seu estado inicial, o que gera um ciclo repetitivo de estados e formatos assumidos por essas células.
+      </p>
+      
+        
     </main>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
