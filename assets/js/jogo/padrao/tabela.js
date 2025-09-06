@@ -62,8 +62,9 @@ class Tabela {
      * 
      * A taxa de crescimento é definida pela propriedade `taxaCrescimento`.
      */
-    aumentaTabela() {
-        const novoTamanho = this.tamanho + this.taxaCrescimento;
+    aumentaTabela(taxaCrescimento=null) {
+        if (!taxaCrescimento) taxaCrescimento = this.taxaCrescimento;
+        const novoTamanho = this.tamanho + taxaCrescimento;
         this.defineTamanho(novoTamanho);
     }
 
@@ -130,7 +131,7 @@ class Tabela {
      * @param {number} valor - O valor a ser inserido na célula.
      */
     inserirCelula(x, y, valor) {
-        while (!this.estaNaTabela(x, y)) this.aumentaTabela();
+       if (!this.estaNaTabela(x, y)) this.aumentaTabela((Math.max(Math.abs(x), Math.abs(y)) - this.meio) * 2);
 
         const indice = (y + this.meio) * this.tamanho + (x + this.meio);
         this.tabela[indice] = valor;

@@ -10,6 +10,7 @@ class Jogo {
         this.tabela = new Tabela(tamanho, taxaCrescimento);
         this.tabelaCopia = new Tabela(tamanho, taxaCrescimento);
         this.bordaDeAtualizacao = bordaDeAtualizacao;
+        this.fios = navigator.hardwareConcurrency || 4; // Número de threads para processamento paralelo
 
         this.automato = new Automato([[1,4], [1,2], [2,3], [3,6], [4,5], [5,7], [6,8], [7,6], [8,8]], 0, [6, 7]);
     }
@@ -37,18 +38,11 @@ class Jogo {
         return celulas;
     }
 
-    /**
-     * Atualiza o estado do jogo.
-     */
-    atualiza() {
-        const tamanhoAtualizacao = this.tabela.tamanho - this.bordaDeAtualizacao * 2;
-
-        const inicio = -this.tabela.tamanho / 2;
-        const fim = this.tabela.tamanho / 2;
-
+    async atualizaSecao(inicioX, fimX, inicioY, fimY, tamanhoAtualizacao) {
         let aumenta = false;
-        for (let i = inicio; i < fim; i++) {
-            for (let j = inicio; j < fim; j++) {
+
+        for (let i = inicioX; i < fimX; i++) {
+            for (let j = inicioY; j < fimY; j++) {
                 const cadeia = this.codificaCelula(i, j);
                 if (this.automato.validarCadeia(cadeia)) {
                     this.tabelaCopia.inserirCelula(i, j, 1);
@@ -59,6 +53,27 @@ class Jogo {
                 }
             }
         }
+
+        return aumenta;
+    }
+
+    /**
+     * Atualiza o estado do jogo.
+     */
+    async atualiza() {
+        const tamanhoAtualizacao = this.tabela.tamanho - this.bordaDeAtualizacao * 2;
+
+        const inicio = -this.tabela.tamanho / 2;
+        const fim = this.tabela.tamanho / 2;
+        const secao = Math.ceil(this.tabela.tamanho / this.fios);
+
+        const promessas = await Promise.all(Array(this.fios).fill(0).map((_, index) => {
+            const secaoInicio = inicio + index * secao;
+            const secaoFim = Math.min(fim, secaoInicio + secao);
+            return this.atualizaSecao(secaoInicio, secaoFim, inicio, fim, tamanhoAtualizacao);
+        }));
+
+        const aumenta = promessas.includes(true);
 
         if (aumenta) {
             this.tabela.aumentaTabela();

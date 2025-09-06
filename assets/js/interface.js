@@ -111,13 +111,12 @@ class UI {
         document.body.removeChild(a); // Remove the link after clicking
     }
 
-    iniciarJogo(intervalo=200) {
-        this.intervaloId = setInterval(() => {
-            this.jogo?.atualiza();
-        }, intervalo);
+    async iniciarJogo(intervalo=200) {
+        await this.jogo?.atualiza();
+        this.intervaloId = setTimeout(this.iniciarJogo.bind(this, intervalo), intervalo);
     }
 
     pararJogo() {
-        clearInterval(this.intervaloId);
+        clearTimeout(this.intervaloId);
     }
 }
