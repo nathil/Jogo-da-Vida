@@ -1,7 +1,7 @@
-$("#save-button").click(() => {
-  interface.salvarTela();
-});
+// $("#save-button").click(() => {
+//   interface.salvarTela();
+// });
 
-$("#redefine-button").click(()=> {
-    interface.redefinirTabela();
-});
+// $("#redefine-button").click(()=> {
+//     interface.redefinirTabela();
+// });

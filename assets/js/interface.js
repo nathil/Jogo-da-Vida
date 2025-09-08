@@ -87,8 +87,20 @@ class UI {
 
         // console.log(`Desenhando de (${xInicio}, ${yInicio}) a (${xFim}, ${yFim})`);
 
-        fill("white");
-        blendMode(this.escala > 12 ? BLEND : ADD); // Remove as bordas para escalas menores
+        // push();
+
+        noStroke();
+        // strokeWeight(this.escala / 10);
+        // fill('white');
+        fill("#39FF14");
+        blendMode(ADD);
+        // blendMode(this.escala > 5 ? BLEND : ADD); // Remove as bordas para escalas menores/
+
+        let glowColor = '#39FF14'; // A specific glow color
+        let blurriness = 20; // Adjust for desired glow intensity
+
+        drawingContext.shadowBlur = blurriness;
+        drawingContext.shadowColor = glowColor;
 
         for (let i = xInicio; i <= xFim; i++) {
             for (let j = yInicio; j <= yFim; j++) {
@@ -98,6 +110,8 @@ class UI {
                 }
             }
         }
+
+        // pop();
     }
 
     salvarTela() {
