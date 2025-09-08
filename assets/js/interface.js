@@ -5,6 +5,8 @@ class UI {
         canvas.addEventListener("contextmenu", (e) => e.preventDefault());
         
         this.canvas = canvas;
+        this.corCelula = "#39FF14";
+        this.borragem = 10;
 
         this.deslocamento = createVector(0, 0);
 
@@ -85,22 +87,14 @@ class UI {
         const xFim = baseDireita.x;
         const yFim = baseDireita.y;
 
-        // console.log(`Desenhando de (${xInicio}, ${yInicio}) a (${xFim}, ${yFim})`);
-
-        // push();
+        push();
 
         noStroke();
-        // strokeWeight(this.escala / 10);
-        // fill('white');
-        fill("#39FF14");
+        fill(this.corCelula);
         blendMode(ADD);
-        // blendMode(this.escala > 5 ? BLEND : ADD); // Remove as bordas para escalas menores/
 
-        let glowColor = '#39FF14'; // A specific glow color
-        let blurriness = 20; // Adjust for desired glow intensity
-
-        drawingContext.shadowBlur = blurriness;
-        drawingContext.shadowColor = glowColor;
+        drawingContext.shadowBlur = this.borragem;
+        drawingContext.shadowColor = this.corCelula;
 
         for (let i = xInicio; i <= xFim; i++) {
             for (let j = yInicio; j <= yFim; j++) {
@@ -111,7 +105,7 @@ class UI {
             }
         }
 
-        // pop();
+        pop();
     }
 
     salvarTela() {
