@@ -5,6 +5,8 @@ class UI {
         canvas.addEventListener("contextmenu", (e) => e.preventDefault());
         
         this.canvas = canvas;
+        this.corCelula = "#39FF14";
+        this.borragem = 10;
 
         this.deslocamento = createVector(0, 0);
 
@@ -79,10 +81,14 @@ class UI {
         const xFim = baseDireita.x;
         const yFim = baseDireita.y;
 
-        // console.log(`Desenhando de (${xInicio}, ${yInicio}) a (${xFim}, ${yFim})`);
+        push();
 
-        fill("white");
-        blendMode(this.escala > 12 ? BLEND : ADD); // Remove as bordas para escalas menores
+        noStroke();
+        fill(this.corCelula);
+        blendMode(ADD);
+
+        drawingContext.shadowBlur = this.borragem;
+        drawingContext.shadowColor = this.corCelula;
 
         for (let i = xInicio; i <= xFim; i++) {
             for (let j = yInicio; j <= yFim; j++) {
@@ -92,6 +98,8 @@ class UI {
                 }
             }
         }
+
+        pop();
     }
 
     salvarTela() {
@@ -105,13 +113,12 @@ class UI {
         document.body.removeChild(a); // Remove the link after clicking
     }
 
-    iniciarJogo(intervalo=200) {
-        this.intervaloId = setInterval(() => {
-            this.jogo?.atualiza();
-        }, intervalo);
+    async iniciarJogo(intervalo=200) {
+        await this.jogo?.atualiza();
+        this.intervaloId = setTimeout(this.iniciarJogo.bind(this, intervalo), intervalo);
     }
 
     pararJogo() {
-        clearInterval(this.intervaloId);
+        clearTimeout(this.intervaloId);
     }
 }

@@ -45,30 +45,53 @@
       <div class="row mt-5 gx-5">
         <div class="col-12 col-lg-auto order-lg-1">
           <div class="hstack justify-content-center">
-            <canvas id="tabuleiro"></canvas>
+            <div class="position-relative">
+              <canvas id="tabuleiro"></canvas>
+              <pre id="debug-log" class="position-absolute top-0 start-0 p-1 user-select-none" style="background-color: rgba(0, 0, 0, 0.5); display: none;"></pre>
+            </div>
           </div>
 
-          <div>
-            <i id="save-button" class="bi bi-download fs-4"></i>
+          <div class="hstack gap-1">
+            <i id="play-pause-fast-button" class="bi bi-pause fs-4"></i>
+            <i id="write-erase-button" class="bi bi-pencil fs-5"></i>       
             <i id="redefine-button" class="bi bi-arrow-clockwise fs-4"></i>
+            <i id="save-button" class="bi bi-download fs-4"></i>
+            <i id="debug-button" class="bi bi-bug fs-5 me-auto"></i>
+            <i id="zoom-in-button" class="bi bi-zoom-in fs-4"></i>
+            <i id="zoom-out-button" class="bi bi-zoom-out fs-4"></i>
           </div>
 
         </div>
 
         <div class="col-12 col-lg order-lg-0">
             <h4>Instruções do jogo</h4>
-            <p class="text-justify pe-lg-5">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam quod, impedit laboriosam minus distinctio ex quasi amet. Autem atque ex dolorum excepturi omnis consectetur porro vero illum corrupti! Perspiciatis, ullam.</p>
+            <p class="text-justify pe-lg-5">
+              Para começar o jogo basta clicar no botão de pause, que seguirá para o botão de acelerar, que aumenta o número de atualizações de 10 para 100 por segundo, seguido pelo botão de pause.
+
+              O botão de escrever serve para pintar células vivas, recomendado fazer isso enquanto o jogo está pausado, ele também é o modo padrão. Caso queira matar algumas células, apagar, basta clicar no botão(caneta) para trocar de modo e começar a apagar, para reverter o modo basta clicar de novo.
+
+              O botão de redefinir serve para redinir sua posição para a posição inicial do jogo e redefinir sua visão.
+
+              O botão de download serve para registrar um momento específico da tela do jogo e baixar ele.
+
+              O botão Debug serve para ver informações como o fps do jogo, o tamanho em que ele já se expandiu e a quantidade de células vivas.
+            </p>
 
         </div>
         
         <div class="col-12 col-lg order-lg-2">
             <h4>Instruções do Jogo tmb</h4>
-            <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quaerat cumque et maiores ut ratione animi temporibus possimus, odit enim?</p>
+            <p class="text-justify pe-lg-5">
+              Com o botão direito do mouse você pode se locomover pelo jogo e o scroll do mouse serve para aumentar e diminuir o zoom.
+              
+              Os botões de zoom-in(ampliar) e zoom-out(desampliar) servem para auxiliar na visualização do jogo.
+            </p>
         </div>  
       </div>
     </main>
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="assets/js/tema.js"> </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.8/lib/p5.js"></script>
