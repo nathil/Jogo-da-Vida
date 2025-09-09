@@ -3,7 +3,7 @@
  * @param {string} str - A string a ser hasheada.
  * @returns {number} - O valor do hash resultante.
  */
-export function hash(str) {
+function hash(str) {
   let hash = 0, char;
 
   for (let i = 0; i < str.length; i++) {

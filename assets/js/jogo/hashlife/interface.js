@@ -21,7 +21,7 @@ class UI {
         const baseDireita = this.telaParaTabela(this.tamanho.copy(), false);
         const comprimentoTabela = baseDireita.x - topoEsquerdo.x;
 
-        this.jogo = new Jogo(comprimentoTabela);
+        this.jogo = new HashLife(comprimentoTabela);
     }
 
     estaNaTela(posicao) {
@@ -86,7 +86,7 @@ class UI {
 
         for (let i = xInicio; i <= xFim; i++) {
             for (let j = yInicio; j <= yFim; j++) {
-                if (this.jogo?.tabela.obterCelula(i, j)) {
+                if (No.obterNo(this.jogo.raiz, i, j).vivos > 0) {
                     const posicao = this.tabelaParaTela(createVector(i, j));
                     square(posicao.x, posicao.y, this.escala);
                 }
@@ -107,7 +107,9 @@ class UI {
 
     iniciarJogo(intervalo=200) {
         this.intervaloId = setInterval(() => {
-            this.jogo?.atualiza();
+            if (this.jogo != null) {
+                this.jogo.raiz = this.jogo.atualizar();
+            }
         }, intervalo);
     }
 
