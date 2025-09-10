@@ -1,6 +1,7 @@
 let interface = null;
 let modoPincel = "escrever";
 let estado = "pausado";
+let velocidade = "lento";
 let debugIn = null;
 const debugEl = $("#debug-log");
 
@@ -45,24 +46,27 @@ function draw() {
   frameRate(60);
 }
 
-$("#play-pause-fast-button").click(() => {
-  const botaoEl = $("#play-pause-fast-button");
+$("#play-pause-button").click(() => {
+  const botaoEl = $("#play-pause-button");
   if (estado === "pausado") {
     estado = "executando";
-    interface.iniciarJogo(150);
-    botaoEl.removeClass("bi-pause bi-fast-forward");
+    interface.iniciarJogo(velocidade === "lento" ? 150 : 10);
+    botaoEl.removeClass("bi-pause");
     botaoEl.addClass("bi-play");
-  } else if (estado === "executando") {
-    estado = "acelerado";
-    interface.pararJogo();
-    interface.iniciarJogo(10);
-    botaoEl.removeClass("bi-play bi-pause");
-    botaoEl.addClass("bi-fast-forward");
   } else {
     estado = "pausado";
     interface.pararJogo();
-    botaoEl.removeClass("bi-play bi-fast-forward");
+    botaoEl.removeClass("bi-play");
     botaoEl.addClass("bi-pause");
+  }
+});
+
+$("#fast-button").click(() => {
+  const BotaoEl = $("#fast-button");
+  velocidade = velocidade === "lento" ? "rapido" : "lento";
+  interface.pararJogo();
+  if (estado === "executando") {
+    interface.iniciarJogo(velocidade === "lento" ? 150 : 10);
   }
 });
 
