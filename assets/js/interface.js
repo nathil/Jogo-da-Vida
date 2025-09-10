@@ -13,7 +13,7 @@ class Interface {
         this.tamanho = createVector(tamanho, tamanho);
         this.meio = this.tamanho.copy().div(2);
 
-        this.zoomMin = 1;
+        this.zoomMin = 0;
         this.zoomMax = 10;
         this.zoomAtual = 1;
         this.escala = 1;
@@ -26,7 +26,60 @@ class Interface {
         this.jogo = new Implementacao(comprimentoTabela);
         this.executando = false;
         this.intervalo = 150;
+
+        this.carregarPadroes();
     }
+
+    carregarPadroes() {
+        fetch('padroes/index.txt')
+            .then(response => response.text())
+            .then(data => {
+                this.padroes = this.parsePadroes(data);
+            })
+            .catch(error => {
+                console.error('Erro ao carregar padrões:', error);
+                this.padroes = {};
+            });
+    }
+
+    parsePadroes(data) {
+        const filenames = data.split('\n');
+        const padroes = [];
+
+        for (const filename of filenames) {
+            padroes.push({
+                filename: filename.trim(),
+                name: filename.replace('.rle', '').replace(/_/g, ' '),
+            });
+        }
+        
+        return padroes;
+    }
+
+    buscarPadroes(termo) {
+        if (!this.padroes) return [];
+
+        termo = termo.toLowerCase();
+        return Object.values(this.padroes)
+            .filter(padrao => padrao.name.toLowerCase().includes(termo))
+            .slice(0, 15);
+    }
+
+    selecionarPadrao(arquivo) {
+        fetch(`padroes/${arquivo}`)
+            .then(response => response.text())
+            .then(data => {
+                this.parar();
+                this.semeiar(data);
+                this.redefinirPosicao();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('search-modal'));
+                modal.hide();
+            })
+            .catch(error => {
+                console.error('Erro ao carregar o padrão:', error);
+            });
+    }
+
 
     estaNaTela(posicao) {
         return posicao.x >= 0 && posicao.x <= this.tamanho.x && posicao.y >= 0 && posicao.y <= this.tamanho.y;
@@ -122,6 +175,57 @@ class Interface {
         setTimeout(() => {
             this.atualizar();
         }, this.intervalo);
+    }
+
+    semeiar(rle) {
+        const linhas = rle.trim().split("\n").filter(linha => !linha.startsWith("#")); 
+
+        const cabecalho = linhas[0];
+        const match = cabecalho.match(/x\s*=\s*(\d+),\s*y\s*=\s*(\d+)/);
+        if (!match) throw new Error("Cabeçalho RLE inválido.");
+
+        const largura = parseInt(match[1], 10);
+        const altura = parseInt(match[2], 10);
+
+        this.redefinirPlano();
+
+        const cadeia = linhas.slice(1).join("").replace(/\s+/g, '');
+        let contador = 0;
+
+        let bufferQuantidade = "";
+        let x = -Math.floor(largura / 2);
+        let y = -Math.floor(altura / 2);
+        let ch = '';
+
+        const numeros = "0123456789";
+        const letras = "bo";
+
+        do {
+            ch = cadeia.charAt(contador);
+
+            if (numeros.includes(ch)) {
+                bufferQuantidade += ch;
+            } else if (letras.includes(ch)) {
+                const quantidade = bufferQuantidade ? parseInt(bufferQuantidade, 10) : 1;
+                bufferQuantidade = "";
+
+                const valor = ch === 'b' ? 0 : 1;
+                for (let i = 0; i < quantidade; i++) {
+                    this.jogo.inserirCelula(x, y, valor);
+                    x++;
+                }
+            } else if (ch === '$') {
+                const quantidade = bufferQuantidade ? parseInt(bufferQuantidade, 10) : 1;
+                bufferQuantidade = "";
+
+                y += quantidade;
+                x = -Math.floor(largura / 2);
+            } else if (ch === '!') {
+                break;
+            } else {
+                throw new Error(`Caractere inválido na codificação RLE: '${ch}'`);
+            }
+        } while (ch !== '!' && contador++ < cadeia.length);
     }
 
     iniciar() {

@@ -16,8 +16,9 @@ function debugLog() {
   let log = "";
 
   log += `fps: ${frameRate().toFixed(1)}\n`;
-  log += `tamanho: ${interface?.jogo.tabela.tamanho}x${interface?.jogo.tabela.tamanho}\n`;
-  log += `quantidade: ${Math.pow(interface?.jogo.tabela.tamanho, 2)}\n`
+  log += `tamanho: ${interface?.jogo.tamanho}x${interface?.jogo.tamanho}\n`;
+  log += `nós: ${Math.pow(interface?.jogo.tamanho, 2)}\n`
+  log += `memória: ${interface?.jogo.tamanhoReal}\n`;
   if (interface.estaNaTela(createVector(mouseX, mouseY))) {
     const posicaoPlano = interface.telaParaPlano(createVector(mouseX, mouseY));
     log += `posição: (${posicaoPlano.x}, ${posicaoPlano.y})\n`;
@@ -35,10 +36,13 @@ function setup() {
   
   const canvasEl = document.getElementById("tabuleiro");
   interface = new Interface(500, canvasEl, rotaAtual === "jogo.html" ? Padrao : HashLife);
-  interface.jogo.tabela.inserirCelula(0, 0, 1);
+  interface.jogo.inserirCelula(0, 0, 1);
 }
 
 function mousePressed() {
+  const modal = document.getElementById('search-modal');
+  if (modal && modal.classList.contains('show')) return;
+  
   const posicao = createVector(mouseX, mouseY)
   if (!mouseIsPressed || sobreBotao || !interface.estaNaTela(posicao)) return;
 
@@ -49,6 +53,9 @@ function mousePressed() {
 }
 
 function mouseDragged() {
+  const modal = document.getElementById('search-modal');
+  if (modal && modal.classList.contains('show')) return;
+
   const posicao = createVector(mouseX, mouseY)
   if (!mouseIsPressed || sobreBotao || !interface.estaNaTela(posicao)) return;
 
@@ -77,6 +84,9 @@ function mouseDragged() {
 } 
 
 function mouseWheel(e) {
+  const modal = document.getElementById('search-modal');
+  if (modal && modal.classList.contains('show')) return;
+  
   if (interface.estaNaTela(createVector(mouseX, mouseY))) {
     interface.definirZoom(interface.zoomAtual + (e.delta < 0 ? 0.1 : -0.1));
   }
@@ -192,11 +202,36 @@ $("#collapse-button").click(() => {
     mostrarMenu = true;
     menu.show();
     botaoEl.removeClass("bi-eye");
-    botaoEl.addClass("bi-eye-fill");
+    botaoEl.addClass("bi-eye-slash");
   } else {
     mostrarMenu = false;
     menu.hide();
-    botaoEl.removeClass("bi-eye-fill");
+    botaoEl.removeClass("bi-eye-slash");
     botaoEl.addClass("bi-eye");
+  }
+});
+
+
+$("#search-input").on("input", () => {
+  const query = $("#search-input").val().toLowerCase();
+  const resultsEl = $("#search-results");
+  const template = document.getElementById("search-result-template");
+
+  resultsEl.empty();
+
+  if (query.length === 0) return;
+
+  const results = interface.buscarPadroes(query);
+
+  if (results.length === 0) {
+    resultsEl.append("<p>Nenhum padrão encontrado.</p>");
+    return;
+  } 
+
+  for (const padrao of results) {
+    const clone = template.content.cloneNode(true);
+    clone.querySelector(".card-title").textContent = padrao.name;
+    clone.querySelector(".select-pattern-button").setAttribute("onclick", `interface.selecionarPadrao('${padrao.filename}')`);
+    resultsEl.append(clone);
   }
 });

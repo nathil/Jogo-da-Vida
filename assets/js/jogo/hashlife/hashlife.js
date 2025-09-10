@@ -47,14 +47,18 @@ class HashLife {
         return this.raiz.tamanho;
     }
 
+    get tamanhoReal() {
+        return No.cache.size;
+    }
+
     /**
      * Insere uma célula viva na posição (x, y).
      * @param {number} x
      * @param {number} y
      * @param {number} valor - 1 para viva, 0 para morta
      */
-    inserirCelula(x, y, valor) {
-        this.raiz = No.inserirCelula(this.raiz, x, y, valor === 1 ? No.um : No.zero);
+    inserirCelula(y, x, valor) {
+        this.raiz = No.inserirNo(this.raiz, x, y, valor === 1 ? No.um : No.zero);
     }
 
     /**

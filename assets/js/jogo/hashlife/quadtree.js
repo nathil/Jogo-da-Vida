@@ -41,7 +41,7 @@ class No {
      * @returns O hash do nó com os parâmetros passados.
      */
     static calculaHash(td, te, bd, be, nivel=null, vivos=null) {
-        return hash(`${te?.hash},${td?.hash},${be?.hash},${bd?.hash},${nivel},${vivos}`);
+        return `${nivel}` + hash(`${te?.hash},${td?.hash},${be?.hash},${bd?.hash},${vivos}`);
     }
     
     /**
@@ -254,6 +254,25 @@ class No {
         });
 
         return matriz;
+    }
+
+    static noParaArray(no) {
+        const array = Array(no.tamanho * no.tamanho).fill(0);
+
+        No.iterarFolhas(no, (folha, x, y) => {
+            array[(x + no.meio) * no.tamanho + (y + no.meio)] = folha.bd;
+        });
+
+        return array;
+    }
+
+    static noParaString(no) {
+        let str = '';
+        
+        No.iterarFolhas(no, (folha, x, y) => {
+            str += folha.bd;
+        });
+        return str;
     }
 
     /**

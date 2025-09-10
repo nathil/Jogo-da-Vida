@@ -19,6 +19,10 @@ class Padrao {
         return this.tabela.tamanho;
     }
 
+    get tamanhoReal() {
+        return Math.pow(this.tabela.tamanho, 2);
+    }
+
     inserirCelula(x, y, valor) {
         this.tabela.inserirCelula(x, y, valor);
     }
