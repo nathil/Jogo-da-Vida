@@ -32,7 +32,7 @@ class Tabela {
     criaTabela(tamanho, tabela=null) {
         const novaTabela = Array(tamanho*tamanho).fill(0);
 
-        if (tabela) {
+        if (tabela !== null) {
             const tamanhoTabela = Math.sqrt(tabela.length);
             const distancia = (tamanho / 2) - (tamanhoTabela / 2);
 
@@ -63,6 +63,7 @@ class Tabela {
      * A taxa de crescimento é definida pela propriedade `taxaCrescimento`.
      */
     aumentaTabela(taxaCrescimento=null) {
+        console.log("Aumentando tabela de tamanho", this.tamanho, "para", this.tamanho + (taxaCrescimento || this.taxaCrescimento));
         if (!taxaCrescimento) taxaCrescimento = this.taxaCrescimento;
         const novoTamanho = this.tamanho + taxaCrescimento;
         this.defineTamanho(novoTamanho);
@@ -104,9 +105,9 @@ class Tabela {
      * @param {number} tamanho - tamanho da tabela. (opcional)
      * @returns {boolean} Verdadeiro se a posição está dentro da tabela, falso caso contrário.
      */
-    estaNaTabela(x, y, tamanho) {
-        if (!tamanho) tamanho = this.tamanho;
-        return x >= -tamanho / 2 && x < tamanho / 2 && y >= -tamanho / 2 && y < tamanho / 2;
+    estaNaTabela(x, y, tamanho=null) {
+        const meio = tamanho === null ? this.meio : (tamanho / 2);
+        return x >= -meio && x < meio && y >= -meio && y < meio;
     }
 
     /**
@@ -119,8 +120,8 @@ class Tabela {
     obterCelula(x, y) {
         if (!this.estaNaTabela(x, y)) return 0;
 
-        const pos = this.relativasParaFisicas(x, y);
-        return this.tabela[pos.y * this.tamanho + pos.x];
+        const posicao = this.relativasParaFisicas(x, y);
+        return this.tabela[posicao.x * this.tamanho + posicao.y];
     }
 
     /** 
@@ -131,10 +132,12 @@ class Tabela {
      * @param {number} valor - O valor a ser inserido na célula.
      */
     inserirCelula(x, y, valor) {
-       if (!this.estaNaTabela(x, y)) this.aumentaTabela((Math.max(Math.abs(x), Math.abs(y)) - this.meio) * 2);
+        if (!this.estaNaTabela(x, y))  {
+            this.defineTamanho((Math.max(Math.abs(x), Math.abs(y)) + this.taxaCrescimento) * 2);
+        }
 
-        const indice = (y + this.meio) * this.tamanho + (x + this.meio);
-        this.tabela[indice] = valor;
+        const posicao = this.relativasParaFisicas(x, y);
+        this.tabela[posicao.x * this.tamanho + posicao.y] = valor;
     }
 
     /**

@@ -1,5 +1,5 @@
-class UI {
-    constructor(tamanho, canvas) {
+class Interface {
+    constructor(tamanho, canvas, Implementacao) {
         createCanvas(tamanho, tamanho, canvas);
         canvas.addEventListener("wheel", (e) => e.preventDefault());
         canvas.addEventListener("contextmenu", (e) => e.preventDefault());
@@ -19,25 +19,27 @@ class UI {
         this.escala = 1;
         this.definirZoom(3.33, false); // Definindo o zoom inicial (Aproximadamente escala de 1 -> 10);
 
-        const topoEsquerdo = this.telaParaTabela(createVector(0, 0), false);
-        const baseDireita = this.telaParaTabela(this.tamanho.copy(), false);
+        const topoEsquerdo = this.telaParaPlano(createVector(0, 0), false);
+        const baseDireita = this.telaParaPlano(this.tamanho.copy(), false);
         const comprimentoTabela = baseDireita.x - topoEsquerdo.x;
 
-        this.jogo = new Jogo(comprimentoTabela);
+        this.jogo = new Implementacao(comprimentoTabela);
+        this.executando = false;
+        this.intervalo = 150;
     }
 
     estaNaTela(posicao) {
         return posicao.x >= 0 && posicao.x <= this.tamanho.x && posicao.y >= 0 && posicao.y <= this.tamanho.y;
     }
 
-    tabelaParaTela(posicao) {
+    planoParaTela(posicao) {
         posicao.mult(this.escala);
         posicao.add(this.meio);
         posicao.add(this.deslocamento);
         return posicao;
     }
 
-    telaParaTabela(posicao, arredondar=true) {
+    telaParaPlano(posicao, arredondar=true) {
         posicao.sub(this.deslocamento);
         posicao.sub(this.meio);
         posicao.div(this.escala);
@@ -47,59 +49,56 @@ class UI {
         return posicao;
     }
 
-    moverTabela(distancia) {
+    moverPlano(distancia) {
         this.deslocamento.add(distancia);
     }
     
-    definirZoom(novoZoom, compensar=true) {
+    definirZoom(novoZoom, compensar=true, usarPosicaoMouse=true) {
         const posicaoMouse = createVector(mouseX, mouseY);
-        const referencia = this.estaNaTela(posicaoMouse) ? posicaoMouse : this.meio.copy();
-        const referenciaNaTabela = this.telaParaTabela(referencia.copy(), false);
-        
+        const referencia = this.estaNaTela(posicaoMouse) && usarPosicaoMouse ? posicaoMouse : this.meio.copy();
+        const referenciaNoPlano = this.telaParaPlano(referencia.copy(), false);
+
         this.zoomAtual = constrain(novoZoom, this.zoomMin, this.zoomMax);
         this.escala = pow(2, this.zoomAtual);
         
         if (compensar) {
-            const referenciaNaTela = this.tabelaParaTela(referenciaNaTabela);
-            this.moverTabela(referencia.sub(referenciaNaTela));
+            const referenciaNaTela = this.planoParaTela(referenciaNoPlano);
+            this.moverPlano(referencia.sub(referenciaNaTela));
         }
     }
     
-    redefinirTabela() {
+    redefinirPosicao() {
         this.deslocamento.set(0, 0);
         this.definirZoom(3.33, false);
+    }
+
+    redefinirPlano() {
+        this.jogo.limpar();
     }
     
     desenhar() {
         background(0);
 
-        const topoEsquerdo = this.telaParaTabela(createVector(0, 0));
-        const baseDireita = this.telaParaTabela(this.tamanho.copy());
+        const topoEsquerdo = this.telaParaPlano(createVector(0, 0));
+        const baseDireita = this.telaParaPlano(this.tamanho.copy());
 
         const xInicio = topoEsquerdo.x;
         const yInicio = topoEsquerdo.y;
         const xFim = baseDireita.x;
         const yFim = baseDireita.y;
 
-        push();
-
         noStroke();
         fill(this.corCelula);
         blendMode(ADD);
 
-        drawingContext.shadowBlur = this.borragem;
-        drawingContext.shadowColor = this.corCelula;
-
         for (let i = xInicio; i <= xFim; i++) {
             for (let j = yInicio; j <= yFim; j++) {
-                if (this.jogo?.tabela.obterCelula(i, j)) {
-                    const posicao = this.tabelaParaTela(createVector(i, j));
+                if (this.jogo.obterCelula(i, j)) {
+                    const posicao = this.planoParaTela(createVector(i, j));
                     square(posicao.x, posicao.y, this.escala);
                 }
             }
         }
-
-        pop();
     }
 
     salvarTela() {
@@ -107,18 +106,32 @@ class UI {
 
         const a = document.createElement('a');
         a.href = imageDataURL;
-        a.download = 'my_canvas_image.png'; // Specify the desired filename
-        document.body.appendChild(a); // Temporarily add the link to the DOM
-        a.click(); // Programmatically click the link to trigger download
-        document.body.removeChild(a); // Remove the link after clicking
+        a.download = 'my_canvas_image.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
 
-    async iniciarJogo(intervalo=200) {
-        await this.jogo?.atualiza();
-        this.intervaloId = setTimeout(this.iniciarJogo.bind(this, intervalo), intervalo);
+    async atualizar() {
+        if (!this.executando) return;
+
+        if (this.jogo != null) {
+            await this.jogo.atualizar();
+        }
+
+        setTimeout(() => {
+            this.atualizar();
+        }, this.intervalo);
     }
 
-    pararJogo() {
-        clearTimeout(this.intervaloId);
+    iniciar() {
+        if (this.executando) return;
+        this.executando = true;
+
+        this.atualizar();
+    }
+
+    parar() {
+        this.executando = false;
     }
 }

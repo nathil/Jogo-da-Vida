@@ -5,6 +5,8 @@ class UI {
         canvas.addEventListener("contextmenu", (e) => e.preventDefault());
         
         this.canvas = canvas;
+        this.corCelula = "#39FF14";
+        this.borragem = 10;
 
         this.deslocamento = createVector(0, 0);
 
@@ -21,7 +23,7 @@ class UI {
         const baseDireita = this.telaParaTabela(this.tamanho.copy(), false);
         const comprimentoTabela = baseDireita.x - topoEsquerdo.x;
 
-        this.jogo = new HashLife(comprimentoTabela);
+        this.jogo = new Padrao(comprimentoTabela);
     }
 
     estaNaTela(posicao) {
@@ -79,19 +81,25 @@ class UI {
         const xFim = baseDireita.x;
         const yFim = baseDireita.y;
 
-        // console.log(`Desenhando de (${xInicio}, ${yInicio}) a (${xFim}, ${yFim})`);
+        push();
 
-        fill("white");
-        blendMode(this.escala > 12 ? BLEND : ADD); // Remove as bordas para escalas menores
+        noStroke();
+        fill(this.corCelula);
+        blendMode(ADD);
+
+        drawingContext.shadowBlur = this.borragem;
+        drawingContext.shadowColor = this.corCelula;
 
         for (let i = xInicio; i <= xFim; i++) {
             for (let j = yInicio; j <= yFim; j++) {
-                if (No.obterNo(this.jogo.raiz, i, j).vivos > 0) {
+                if (this.jogo?.tabela.obterCelula(i, j)) {
                     const posicao = this.tabelaParaTela(createVector(i, j));
                     square(posicao.x, posicao.y, this.escala);
                 }
             }
         }
+
+        pop();
     }
 
     salvarTela() {
@@ -105,15 +113,12 @@ class UI {
         document.body.removeChild(a); // Remove the link after clicking
     }
 
-    iniciarJogo(intervalo=200) {
-        this.intervaloId = setInterval(() => {
-            if (this.jogo != null) {
-                this.jogo.raiz = this.jogo.atualizar();
-            }
-        }, intervalo);
+    async iniciarJogo(intervalo=200) {
+        await this.jogo?.atualiza();
+        this.intervaloId = setTimeout(this.iniciarJogo.bind(this, intervalo), intervalo);
     }
 
     pararJogo() {
-        clearInterval(this.intervaloId);
+        clearTimeout(this.intervaloId);
     }
 }

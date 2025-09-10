@@ -5,8 +5,8 @@
  * @param {number} bordaDeAtualizacao - A borda de atualização para a detecção de células vivas.
  * @param {number} taxaCrescimento - A taxa de crescimento da tabela. (opcional)
  */
-class Jogo {
-    constructor(tamanho, bordaDeAtualizacao=1, taxaCrescimento=10) {
+class Padrao {
+    constructor(tamanho, bordaDeAtualizacao=2, taxaCrescimento=10) {
         this.tabela = new Tabela(tamanho, taxaCrescimento);
         this.tabelaCopia = new Tabela(tamanho, taxaCrescimento);
         this.bordaDeAtualizacao = bordaDeAtualizacao;
@@ -15,6 +15,22 @@ class Jogo {
         this.automato = new Automato([[1,4], [1,2], [2,3], [3,6], [4,5], [5,7], [6,8], [7,6], [8,8]], 0, [6, 7]);
     }
 
+    get tamanho() {
+        return this.tabela.tamanho;
+    }
+
+    inserirCelula(x, y, valor) {
+        this.tabela.inserirCelula(x, y, valor);
+    }
+    
+    obterCelula(x, y) {
+        return this.tabela.obterCelula(x, y);
+    }
+
+    limpar() {
+        this.tabela = new Tabela(this.tabela.tamanho, this.tabela.taxaCrescimento);
+    }
+    
     /**
      * Codifica a célula atual (x) e seus vizinhos (y) para o formato xyyyyyyyy
      * 
@@ -38,44 +54,44 @@ class Jogo {
         return celulas;
     }
 
-    async atualizaSecao(inicioX, fimX, inicioY, fimY, tamanhoAtualizacao) {
-        let aumenta = false;
+    async atualizaSecao(inicioX, fimX, inicioY, fimY, tamanhoBorda) {
+        let aumentaTabela = false;
 
         for (let i = inicioX; i < fimX; i++) {
             for (let j = inicioY; j < fimY; j++) {
                 const cadeia = this.codificaCelula(i, j);
-                if (this.automato.validarCadeia(cadeia)) {
+                const valida = this.automato.validarCadeia(cadeia);
+                const estadoCopia = this.tabelaCopia.obterCelula(i, j);
+                if (valida && estadoCopia === 0) {
                     this.tabelaCopia.inserirCelula(i, j, 1);
 
-                    if (!this.tabela.estaNaTabela(i, j, tamanhoAtualizacao)) aumenta = true;
-                } else {
+                    if (!this.tabela.estaNaTabela(i, j, tamanhoBorda)) aumentaTabela = true;
+                } else if (!valida && estadoCopia === 1) {
                     this.tabelaCopia.inserirCelula(i, j, 0);
                 }
             }
         }
 
-        return aumenta;
+        return aumentaTabela;
     }
 
     /**
      * Atualiza o estado do jogo.
      */
-    async atualiza() {
-        const tamanhoAtualizacao = this.tabela.tamanho - this.bordaDeAtualizacao * 2;
+    async atualizar() {
+        const tamanhoBorda = this.tabela.tamanho - this.bordaDeAtualizacao;
 
-        const inicio = -this.tabela.tamanho / 2;
-        const fim = this.tabela.tamanho / 2;
-        const secao = Math.ceil(this.tabela.tamanho / this.fios);
+        const inicio = -this.tabela.meio;
+        const fim = this.tabela.meio;
+        const secao = Math.floor(this.tabela.tamanho / this.fios);
 
-        const promessas = await Promise.all(Array(this.fios).fill(0).map((_, index) => {
+        const promessas = await Promise.all(Array(this.fios).fill().map((_, index) => {
             const secaoInicio = inicio + index * secao;
-            const secaoFim = Math.min(fim, secaoInicio + secao);
-            return this.atualizaSecao(secaoInicio, secaoFim, inicio, fim, tamanhoAtualizacao);
+            const secaoFim = index === this.fios - 1 ? fim : secaoInicio + secao;
+            return this.atualizaSecao(secaoInicio, secaoFim, inicio, fim, tamanhoBorda);
         }));
 
-        const aumenta = promessas.includes(true);
-
-        if (aumenta) {
+        if (promessas.includes(true)) {
             this.tabela.aumentaTabela();
             this.tabelaCopia.aumentaTabela();
         }
