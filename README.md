@@ -3,6 +3,7 @@
 
 <h2> Sobre o Projeto </h2>
 Nesse projeto o objetivo central é a construção de um site, que apresenta a história do jogo e seu criador, também há a possibilidade de jogar o jogo da vida original e sua versão otimazada implementando uma linguagem livre de contexto e o algoritmo Hashlife. 
+Além disso, explora-se suas regras, sua relação com Máquina de Turing Universal, a representação formal do autômato finito e regular, a definição propriamente do autômato. Bem como, uma otimização para o Jogo da Vida envolvendo Gramáticas Livres de Contexto.  
 
 <h2> Funcionalidades </h2>
 <ol>
